@@ -12,37 +12,50 @@ const AddComputer = () => {
     os_version: "",
   });
 
-  const [loading, setLoading] = useState(false); // State for loading indicator
-  const [error, setError] = useState(""); // State for error message
-  const [success, setSuccess] = useState(""); // State for success message
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true when submitting the form
+    setError("");
+    setSuccess("");
 
-    axios
-      .post("http://localhost:5000/api/pcs", formData)
-      .then(() => {
-        setLoading(false); // Set loading to false when submission is successful
-        setSuccess("Computer added successfully!"); // Show success message
-        setError(""); // Clear any previous error messages
-        setTimeout(() => {
-          navigate("/"); // Redirect to computer list page after success
-        }, 1500); // Wait for 1.5 seconds before navigating
-      })
-      .catch((error) => {
-        setLoading(false); // Set loading to false if there's an error
-        setError("There was an error adding the computer!"); // Show error message
-        setSuccess(""); // Clear any previous success messages
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("You must be logged in to add a computer.");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/pcs", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
       });
+
+      setSuccess("Computer added successfully!");
+      setLoading(false);
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
+    } catch (err) {
+      console.error("Error adding computer:", err);
+      const msg =
+        err.response?.data?.message || "There was an error adding the computer.";
+      setError(msg);
+      setLoading(false);
+    }
   };
 
   return (
@@ -50,10 +63,9 @@ const AddComputer = () => {
       <Typography variant="h4" gutterBottom>
         Add a New Computer
       </Typography>
-      
-      {/* Show success or error message */}
-      {success && <Alert severity="success">{success}</Alert>}
-      {error && <Alert severity="error">{error}</Alert>}
+
+      {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
+      {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
       <form onSubmit={handleSubmit}>
         <Grid container spacing={3}>
@@ -102,14 +114,13 @@ const AddComputer = () => {
             />
           </Grid>
         </Grid>
-        
-        {/* Show loading spinner if submitting */}
+
         <Button
           type="submit"
           variant="contained"
           color="primary"
-          style={{ marginTop: "20px" }}
-          disabled={loading} // Disable the button while loading
+          sx={{ mt: 3 }}
+          disabled={loading}
         >
           {loading ? <CircularProgress size={24} color="inherit" /> : "Add Computer"}
         </Button>
