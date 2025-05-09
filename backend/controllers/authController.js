@@ -4,19 +4,35 @@ const jwt = require('jsonwebtoken');
 
 // Helper function to generate JWT token
 const generateToken = (user) => {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET is not defined in environment variables.");
+  }
+
   return jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-    expiresIn: '7d', // Token expires after 7 days
+    expiresIn: '7d',
   });
 };
 
 // User registration (sign up)
 exports.registerUser = async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, email, password, role = 'it_personnel' } = req.body;
 
-    // Check if user already exists
+    // Basic validation
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
+    // Check if username or email already exists
     const existingUser = await User.findOne({ username });
-    if (existingUser) return res.status(400).json({ message: 'User already exists' });
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({ message: 'Email already registered' });
+    }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,6 +40,7 @@ exports.registerUser = async (req, res) => {
     // Create new user
     const user = new User({
       username,
+      email,
       password: hashedPassword,
       role,
     });
@@ -32,6 +49,7 @@ exports.registerUser = async (req, res) => {
     res.status(201).json({ message: 'User created successfully' });
 
   } catch (err) {
+    console.error("Registration error:", err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -41,18 +59,25 @@ exports.loginUser = async (req, res) => {
   try {
     const { username, password } = req.body;
 
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
+
     // Find user by username
     const user = await User.findOne({ username });
-    if (!user) return res.status(404).json({ message: 'User not found' });
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
-    // Check if password matches
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
 
     // Generate JWT token
     const token = generateToken(user);
 
-    // Respond with token and user role
     res.json({
       token,
       role: user.role,
@@ -60,6 +85,7 @@ exports.loginUser = async (req, res) => {
     });
 
   } catch (err) {
+    console.error("Login error:", err);
     res.status(500).json({ message: 'Server error' });
   }
 };

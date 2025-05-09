@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = ({ onLogin }) => {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState(""); // Changed from email
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -14,20 +14,20 @@ const LoginPage = ({ onLogin }) => {
 
     try {
       const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
+        username, // Changed from email
         password,
       });
 
       const { token } = response.data;
-      localStorage.setItem("token", token); // store token
-      onLogin(); // callback to refresh app state or redirect
+      localStorage.setItem("token", token);
+      onLogin();
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
   };
 
   const handleSignUpRedirect = () => {
-    navigate("/signup"); // Redirect to sign-up page if user doesn't have an account
+    navigate("/signup");
   };
 
   return (
@@ -36,12 +36,12 @@ const LoginPage = ({ onLogin }) => {
       {error && <p style={{ color: "red" }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Email:</label>
+          <label>Username:</label>
           <br />
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -72,5 +72,3 @@ const LoginPage = ({ onLogin }) => {
 };
 
 export default LoginPage;
-
-
