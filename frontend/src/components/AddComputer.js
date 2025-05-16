@@ -98,10 +98,21 @@ const AddComputer = () => {
   }
 
   return (
-    <Container maxWidth="md" sx={{ mt: 4 }}>
-      <Card elevation={5}>
+    <Container maxWidth="md" sx={{ mt: 4, backgroundColor: "#fdf6e3", p: 3, borderRadius: 3 }}>
+      <Card elevation={6} sx={{ borderRadius: 3 }}>
         <CardContent>
-          <Typography variant="h4" gutterBottom color="primary" align="center">
+          <Typography
+            variant="h4"
+            gutterBottom
+            align="center"
+            sx={{
+              color: "#0288d1",
+              fontWeight: "bold",
+              mb: 3,
+              fontFamily: "'Segoe UI', sans-serif",
+              textShadow: "1px 1px #b2ebf2",
+            }}
+          >
             Add a New PC
           </Typography>
 
@@ -141,6 +152,10 @@ const AddComputer = () => {
                     value={formData[name]}
                     onChange={handleChange}
                     required
+                    sx={{
+                      backgroundColor: "#ffffff",
+                      borderRadius: 1,
+                    }}
                   />
                 </Grid>
               ))}
@@ -154,6 +169,7 @@ const AddComputer = () => {
                   onChange={handleChange}
                   fullWidth
                   required
+                  sx={{ backgroundColor: "#ffffff", borderRadius: 1 }}
                 >
                   {["DRONA", "CIAG", "STANDALONE", "NKN"].map((option) => (
                     <MenuItem key={option} value={option}>
@@ -175,6 +191,7 @@ const AddComputer = () => {
                         checked={formData[name]}
                         onChange={handleChange}
                         name={name}
+                        sx={{ color: "#0288d1" }}
                       />
                     }
                     label={label}
@@ -186,10 +203,18 @@ const AddComputer = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  color="primary"
                   fullWidth
                   disabled={loading}
-                  sx={{ py: 1.5 }}
+                  sx={{
+                    py: 1.5,
+                    backgroundColor: "#0288d1",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    fontSize: "1rem",
+                    "&:hover": {
+                      backgroundColor: "#0277bd",
+                    },
+                  }}
                 >
                   {loading ? <CircularProgress size={24} color="inherit" /> : "Add PC"}
                 </Button>

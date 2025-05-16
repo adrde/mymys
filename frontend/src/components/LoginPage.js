@@ -34,7 +34,7 @@ const LoginPage = ({ onLogin }) => {
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h2 style={styles.heading}>Login</h2>
+        <h2 style={styles.heading}>Welcome Back</h2>
         {error && <p style={styles.error}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <div style={styles.inputGroup}>
@@ -76,7 +76,7 @@ const LoginPage = ({ onLogin }) => {
 
 const styles = {
   container: {
-    backgroundColor: "#f4f6f9",
+    backgroundColor: "#e6f9f4", // soft mint background
     minHeight: "100vh",
     display: "flex",
     alignItems: "center",
@@ -84,57 +84,67 @@ const styles = {
     padding: 20,
   },
   card: {
-    backgroundColor: "#fff",
-    padding: 30,
+    backgroundColor: "#ffffff",
+    padding: 35,
     borderRadius: 12,
-    boxShadow: "0 0 12px rgba(0,0,0,0.1)",
+    boxShadow: "0 8px 24px rgba(0, 0, 0, 0.1)",
     width: "100%",
     maxWidth: 400,
   },
   heading: {
-    marginBottom: 20,
-    color: "#333",
+    marginBottom: 25,
+    color: "#2d3748", // deep slate
     textAlign: "center",
+    fontSize: "1.8rem",
+    fontWeight: "600",
   },
   inputGroup: {
-    marginBottom: 15,
+    marginBottom: 18,
   },
   label: {
     display: "block",
-    marginBottom: 5,
-    fontWeight: "bold",
+    marginBottom: 6,
+    fontWeight: "500",
+    color: "#2d3748",
   },
   input: {
     width: "100%",
     padding: 10,
-    border: "1px solid #ccc",
+    border: "1px solid #d1d5db",
     borderRadius: 6,
     fontSize: "1rem",
+    backgroundColor: "#f9fafa",
+    color: "#2d3748",
   },
   button: {
     width: "100%",
     padding: 12,
-    backgroundColor: "#007bff",
-    color: "#fff",
+    backgroundColor: "#38b2ac", // mint teal
+    color: "#ffffff",
     border: "none",
     borderRadius: 6,
     fontSize: "1rem",
+    fontWeight: "bold",
     cursor: "pointer",
     marginTop: 10,
+    transition: "background-color 0.3s ease",
   },
   redirect: {
     marginTop: 20,
     textAlign: "center",
+    fontSize: "0.95rem",
   },
   link: {
-    color: "#007bff",
+    color: "#38b2ac",
     cursor: "pointer",
     textDecoration: "underline",
+    fontWeight: "bold",
   },
   error: {
-    color: "red",
+    color: "#e53e3e", // coral red
     fontSize: "0.9rem",
-    marginBottom: 10,
+    marginBottom: 15,
+    textAlign: "center",
   },
 };
 

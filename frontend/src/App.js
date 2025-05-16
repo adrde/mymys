@@ -77,15 +77,23 @@ const styles = {
     minHeight: "100vh",
   },
   header: {
-    backgroundColor: "#007bff",
+    background: "linear-gradient(to right, #0288d1, #26c6da)", // ocean horizon
     padding: "20px 30px",
-    color: "white",
+    color: "#ffffff",
     textAlign: "center",
-  },
+    borderBottom: "3px solid #4dd0e1",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
+  }
+  ,
+  
   title: {
     margin: 0,
     fontSize: "1.8rem",
-  },
+    fontWeight: "600",
+    letterSpacing: "0.5px",
+    fontFamily: "'Segoe UI', sans-serif",
+  }
+  ,
   main: {
     padding: "30px 20px",
     maxWidth: "900px",

@@ -18,7 +18,6 @@ import {
 const ComputerList = () => {
   const [computers, setComputers] = useState([]);
   const role = localStorage.getItem("role");
-;
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -40,25 +39,48 @@ const ComputerList = () => {
   return (
     <Container maxWidth="xl" sx={{ mt: 4 }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
-        <Typography variant="h4" color="primary">
+        <Typography
+          variant="h4"
+          sx={{
+            color: "#1b5e20", // Dark forest text
+            fontWeight: "bold",
+            letterSpacing: 1,
+          }}
+        >
           Computer Inventory
         </Typography>
-        {role === "admin" && (
-  <Button
-    component={Link}
-    to="/add-computer"
-    variant="contained"
-    color="primary"
-  >
-    Add Computer
-  </Button>
-)}
 
+        {role === "admin" && (
+          <Button
+            component={Link}
+            to="/add-computer"
+            variant="contained"
+            sx={{
+              backgroundColor: "#2e7d32", // Emerald green
+              "&:hover": {
+                backgroundColor: "#1b5e20",
+              },
+              fontWeight: "bold",
+              borderRadius: 2,
+              px: 3,
+              py: 1.2,
+            }}
+          >
+            Add Computer
+          </Button>
+        )}
       </Box>
 
-      <TableContainer component={Paper} elevation={4} sx={{ borderRadius: 2 }}>
+      <TableContainer
+        component={Paper}
+        elevation={5}
+        sx={{
+          borderRadius: 3,
+          backgroundColor: "#ffffff",
+        }}
+      >
         <Table>
-          <TableHead sx={{ backgroundColor: "#f0f4f8" }}>
+          <TableHead sx={{ backgroundColor: "#e8f5e9" }}>
             <TableRow>
               {[
                 "Call No",
@@ -70,7 +92,14 @@ const ComputerList = () => {
                 "Dept",
                 "Network",
               ].map((col) => (
-                <TableCell key={col} sx={{ fontWeight: "bold" }}>
+                <TableCell
+                  key={col}
+                  sx={{
+                    fontWeight: "bold",
+                    color: "#2e7d32",
+                    textTransform: "uppercase",
+                  }}
+                >
                   {col}
                 </TableCell>
               ))}
@@ -81,7 +110,10 @@ const ComputerList = () => {
               <TableRow
                 key={computer._id}
                 hover
-                sx={{ "&:hover": { backgroundColor: "#fafafa" } }}
+                sx={{
+                  "&:hover": { backgroundColor: "#f1f8e9" },
+                  transition: "background-color 0.3s ease",
+                }}
               >
                 <TableCell>{computer.callNo}</TableCell>
                 <TableCell>
